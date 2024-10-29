@@ -1,11 +1,12 @@
 package com.example.ckdoan.controller;
 import com.example.ckdoan.model.Product;
+import com.example.ckdoan.repository.ProductRepository;
 import com.example.ckdoan.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @Controller
@@ -16,7 +17,15 @@ public class ProductController {
 
     public ProductController() {
     }
-
+    @Autowired
+    private ProductRepository repo;
+//    LAY DU LIEU Tu myphpadmin
+    @GetMapping({"", "/shop"})
+    public String ShowProductList(Model model) {
+        List<Product> products = repo.findAll();//Sort.by(Sort.Direction.DESC, "id")
+        model.addAttribute("products", products);
+        return "shop";
+    }
     // GET ALL PRODUCTS
     @GetMapping("/products")
     @ResponseBody
@@ -70,11 +79,14 @@ public class ProductController {
     }
     @GetMapping("/")
     public String showShopPage() {
-        return "index"; // Trả về file index.html
+        return "index";
     }
-    @GetMapping("/shop")
-    public String showShopPage1() {
-        return "shop";
+    @GetMapping("/cart")
+    public String showCartPage() {
+        return "cart";
     }
-
+//    @GetMapping("/login")
+//    public String showLoginPage() {
+//        return "login"
+//    }
 }
