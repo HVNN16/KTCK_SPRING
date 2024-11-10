@@ -1,9 +1,11 @@
 package com.example.ckdoan.service;
+
 import com.example.ckdoan.model.Product;
 import com.example.ckdoan.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp; // Sửa đổi ở đây
 import java.util.List;
 
 @Service
@@ -25,16 +27,19 @@ public class ProductService {
 
     // Save new or updated product
     public Product save(Product product) {
-        return productRepository.save(product);
-    }
-
-    // Update product (this is handled by save method since save can insert or update)
-    public Product update(Product product) {
+        // Set timestamps
+        if (product.getCreatedAt() == null) {
+            product.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+        }
+        product.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
         return productRepository.save(product);
     }
 
     // Delete product by ID
     public void delete(Long id) {
+        if (!productRepository.existsById(id)) {
+            throw new RuntimeException("Product not found");
+        }
         productRepository.deleteById(id);
     }
 }

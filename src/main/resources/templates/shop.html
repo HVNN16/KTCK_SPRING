@@ -133,7 +133,7 @@
                             <div class="navbar-nav mr-auto py-0 w-100 d-flex justify-content-center">
                                 <a href="/" class="nav-item nav-link position-relative text-uppercase mx-4">Home</a>
                                 <a href="/shop" class="nav-item nav-link position-relative text-uppercase  mx-4 active">Shop</a>
-                                <a href="" class="nav-item nav-link position-relative text-uppercase  mx-4">Shop Detail</a>
+                                <a href="/detail" class="nav-item nav-link position-relative text-uppercase  mx-4">Shop Detail</a>
                                 <a href="/cart" class="nav-item nav-link position-relative text-uppercase  mx-4">Shopping Cart</a>
                                 <a href="" class="nav-item nav-link position-relative text-uppercase  mx-4">Checkout</a>
                                 <a href="" class="nav-item nav-link position-relative text-uppercase  mx-4">Contact</a>
@@ -294,9 +294,29 @@
                                     </div>
                                 </div>
                                 <div class="card-footer d-flex justify-content-between bg-light border">
-                                    <a href="#" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View Detail</a>
-                                    <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
+                                    <a href="#" class="btn btn-sm text-dark p-0">
+                                        <i class="fas fa-eye text-primary mr-1"></i>View Detail
+                                    </a>
+                                    <a href="#" class="btn btn-sm text-dark p-0" onclick="addToCart([[${product.id}]], 1)">
+                                        <i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart
+                                    </a>
                                 </div>
+                                <script>
+                                    function addToCart(productId, quantity) {
+                                        fetch(`/cart/add?userId=1&productId=${productId}&quantity=${quantity}`, {
+                                            method: 'POST'
+                                        })
+                                            .then(response => response.text())
+                                            .then(data => {
+                                                alert("Product added to cart successfully!");
+                                                window.location.href = "/cart/view?userId=1"; // Điều hướng tới trang giỏ hàng
+                                            })
+                                            .catch(error => {
+                                                console.error("Error adding product to cart:", error);
+                                            });
+                                    }
+                                </script>
+
                             </div>
                         </div>
                         </div>

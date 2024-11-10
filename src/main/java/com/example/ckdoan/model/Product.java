@@ -11,7 +11,7 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     // Tự động tạo ID
-    private int productId;
+    private Long productId; // Thay đổi từ int sang Long cho ID
 
     private String productName;
     private String description;
@@ -28,7 +28,7 @@ public class Product {
     private Timestamp updatedAt;
 
     // Constructor with fields
-    public Product(int productId, String productName, String description, BigDecimal price, int stock, int categoryId, String imageUrl, Timestamp createdAt, Timestamp updatedAt) {
+    public Product(Long productId, String productName, String description, BigDecimal price, int stock, int categoryId, String imageUrl, Timestamp createdAt, Timestamp updatedAt) {
         this.productId = productId;
         this.productName = productName;
         this.description = description;
@@ -45,12 +45,12 @@ public class Product {
     }
 
     // Getter & Setter methods
-    public int getProductId() {
-        return productId;
+    public Long getProductId() {
+        return productId; // Đổi về Long
     }
 
-    public void setProductId(int productId) {
-        this.productId = productId;
+    public void setProductId(Long productId) {
+        this.productId = productId; // Đổi về Long
     }
 
     public String getProductName() {
@@ -115,5 +115,15 @@ public class Product {
 
     public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = new Timestamp(System.currentTimeMillis());
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = new Timestamp(System.currentTimeMillis());
     }
 }
