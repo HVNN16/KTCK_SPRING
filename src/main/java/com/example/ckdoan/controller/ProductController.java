@@ -34,6 +34,14 @@ public class ProductController {
         model.addAttribute("products", products);
         return "shop"; // Trả về view cho trang shop
     }
+    @GetMapping("/detail")
+    public String showDetailPage(Model model) {
+        List<Product> products = productService.findAll(); // Fetch all products
+        model.addAttribute("products", products); // Add the list of products to the model
+        return "detail"; // Return to the detail view
+    }
+
+
 
     // GET ALL PRODUCTS
     @GetMapping("/products")
@@ -118,11 +126,9 @@ public class ProductController {
         return "admin"; // Trả về view admin.html
     }
 
-    // Lưu hình ảnh
     private String saveImage(MultipartFile imageFile) {
-//        String fileName = System.currentTimeMillis() + "_" + imageFile.getOriginalFilename();
         String fileName = imageFile.getOriginalFilename();
-        String filePath = fileName;
+        String filePath = fileName; // Đường dẫn đầy đủ
 
         // Tạo thư mục nếu nó không tồn tại
         File directory = new File(IMAGE_PATH);
@@ -131,30 +137,33 @@ public class ProductController {
         }
 
         try {
-            imageFile.transferTo(new File(filePath)); // Lưu file vào đường dẫn
+            imageFile.transferTo(new File(filePath)); // Lưu file vào đường dẫn đầy đủ
         } catch (IOException e) {
             throw new RuntimeException("Failed to store file: " + e.getMessage());
         }
-        return filePath; // Trả về đường dẫn hình ảnh đã lưu
+        return fileName; // Trả về đường dẫn URL hợp lệ cho hình ảnh
     }
+
+
+
 
 //    @GetMapping("/")
 //    public String showShopPage() {
 //        return "index";
 //    }
 
-    @GetMapping("/cart")
-    public String showCartPage() {
-        return "cart";
-    }
+//    @GetMapping("/cart")
+//    public String showCartPage() {
+//        return "cart";
+//    }
 
     @GetMapping("/register")
     public String showLoginPage() {
         return "register";
     }
 
-    @GetMapping("/detail")
-    public String showDetailPage() {
-        return "detail";
-    }
+//    @GetMapping("/detail")
+//    public String showDetailPage() {
+//        return "detail";
+//    }
 }

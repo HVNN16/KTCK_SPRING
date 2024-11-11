@@ -255,30 +255,7 @@
 <!--                </div>-->
                 <div class="container mt-4">
                     <div class="row">
-                        <!-- Lặp qua danh sách sản phẩm -->
-<!--                        <div class="col-lg-4 col-md-6 col-sm-12 pb-1" th:each="product : ${products}">-->
-<!--                            <div class="card product-item border-0 mb-4">-->
-<!--                                <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">-->
-<!--                                    <img th:src="@{'/images/' + ${product.imageUrl}}" alt="..." width="100">-->
-<!--                                </div>-->
-<!--                                <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">-->
-<!--                                    <h6 class="text-truncate mb-3" th:text="${product.productName}"></h6>-->
-<!--                                    <div class="d-flex justify-content-center">-->
-<!--                                        <h6 th:text="'$' + ${product.price}"></h6>-->
-<!--                                        <h6 class="text-muted ml-2" th:if="${product.price < 123.00}">-->
-<!--                                            <del>$123.00</del>-->
-<!--                                        </h6>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                        <div class="card-footer d-flex justify-content-between bg-light border">-->
-<!--                            <a href="#" class="btn btn-sm text-dark p-0">-->
-<!--                                <i class="fas fa-eye text-primary mr-1"></i>View Detail-->
-<!--                            </a>-->
-<!--                            <a href="#" class="btn btn-sm text-dark p-0">-->
-<!--                                <i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart-->
-<!--                            </a>-->
-<!--                        </div>-->
-<!--                    </div>-->
+
                         <div class="col-lg-4 col-md-6 col-sm-12 pb-1" th:each="product : ${products}">
                             <div class="card product-item border-0 mb-4">
                                 <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
@@ -294,7 +271,7 @@
                                     </div>
                                 </div>
                                 <div class="card-footer d-flex justify-content-between bg-light border">
-                                    <a href="#" class="btn btn-sm text-dark p-0">
+                                    <a href="/detail" class="btn btn-sm text-dark p-0">
                                         <i class="fas fa-eye text-primary mr-1"></i>View Detail
                                     </a>
                                     <a href="#" class="btn btn-sm text-dark p-0" onclick="addToCart([[${product.id}]], 1)">
