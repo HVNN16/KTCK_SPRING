@@ -274,26 +274,43 @@
                                     <a href="/detail" class="btn btn-sm text-dark p-0">
                                         <i class="fas fa-eye text-primary mr-1"></i>View Detail
                                     </a>
-                                    <a href="#" class="btn btn-sm text-dark p-0" onclick="addToCart([[${product.id}]], 1)">
-                                        <i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart
-                                    </a>
-                                </div>
-                                <script>
-                                    function addToCart(productId, quantity) {
-                                        fetch(`/cart/add?userId=1&productId=${productId}&quantity=${quantity}`, {
-                                            method: 'POST'
-                                        })
-                                            .then(response => response.text())
-                                            .then(data => {
-                                                alert("Product added to cart successfully!");
-                                                window.location.href = "/cart/view?userId=1"; // Điều hướng tới trang giỏ hàng
-                                            })
-                                            .catch(error => {
-                                                console.error("Error adding product to cart:", error);
-                                            });
-                                    }
-                                </script>
 
+                                    <!-- Nút Add to Cart -->
+                                    <button onclick="addToCart(123, 1)">Add to Cart</button> <!-- Thay 123 và 1 bằng cartId và productId thực tế -->
+
+                                    <!-- JavaScript xử lý -->
+                                    <script>
+                                        function addToCart(cartId, productId) {
+                                            // Lấy số lượng sản phẩm từ input hoặc mặc định là 1
+                                            const quantity = 1; // Bạn có thể thay đổi theo cách người dùng nhập
+
+                                            fetch(`/api/cart/${cartId}/add?productId=${productId}&quantity=${quantity}`, {
+                                                method: 'POST',
+                                                headers: {
+                                                    'Content-Type': 'application/json'
+                                                }
+                                            })
+                                                .then(response => {
+                                                    if (!response.ok) {
+                                                        throw new Error('Failed to add product to cart');
+                                                    }
+                                                    return response.json();
+                                                })
+                                                .then(data => {
+                                                    // Hiển thị thông báo thành công và điều hướng đến giỏ hàng
+                                                    alert("Product added to cart!");
+                                                    window.location.href = "/cart";  // Điều hướng đến trang giỏ hàng
+                                                })
+                                                .catch(error => {
+                                                    console.error('Error:', error);
+                                                    alert("There was an error adding the product to the cart. Please try again.");
+                                                });
+                                        }
+                                    </script>
+
+
+
+                                </div>
                             </div>
                         </div>
                         </div>

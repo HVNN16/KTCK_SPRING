@@ -20,10 +20,11 @@ public class ProductService {
     }
 
     // Find product by ID
-    public Product findById(Long id) {
-        return productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+    public Product findById(Long productId) {
+        return productRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("Product not found with id: " + productId));
     }
+
 
     // Save new or updated product
     public Product save(Product product) {

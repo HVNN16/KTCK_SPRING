@@ -145,17 +145,10 @@ public class ProductController {
     }
 
 
-
-
-//    @GetMapping("/")
-//    public String showShopPage() {
-//        return "index";
-//    }
-
-//    @GetMapping("/cart")
-//    public String showCartPage() {
-//        return "cart";
-//    }
+    @GetMapping("/cart")
+    public String showCartPage() {
+        return "cart";
+    }
 
     @GetMapping("/register")
     public String showLoginPage() {

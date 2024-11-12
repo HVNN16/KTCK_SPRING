@@ -11,6 +11,7 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     // Tự động tạo ID
+
     private Long productId; // Thay đổi từ int sang Long cho ID
 
     private String productName;
