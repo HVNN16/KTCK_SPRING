@@ -275,38 +275,11 @@
                                         <i class="fas fa-eye text-primary mr-1"></i>View Detail
                                     </a>
 
-                                    <!-- Nút Add to Cart -->
-                                    <button onclick="addToCart(123, 1)">Add to Cart</button> <!-- Thay 123 và 1 bằng cartId và productId thực tế -->
+                                    <button class="add-to-cart">Add to Cart</button>
 
-                                    <!-- JavaScript xử lý -->
-                                    <script>
-                                        function addToCart(cartId, productId) {
-                                            // Lấy số lượng sản phẩm từ input hoặc mặc định là 1
-                                            const quantity = 1; // Bạn có thể thay đổi theo cách người dùng nhập
 
-                                            fetch(`/api/cart/${cartId}/add?productId=${productId}&quantity=${quantity}`, {
-                                                method: 'POST',
-                                                headers: {
-                                                    'Content-Type': 'application/json'
-                                                }
-                                            })
-                                                .then(response => {
-                                                    if (!response.ok) {
-                                                        throw new Error('Failed to add product to cart');
-                                                    }
-                                                    return response.json();
-                                                })
-                                                .then(data => {
-                                                    // Hiển thị thông báo thành công và điều hướng đến giỏ hàng
-                                                    alert("Product added to cart!");
-                                                    window.location.href = "/cart";  // Điều hướng đến trang giỏ hàng
-                                                })
-                                                .catch(error => {
-                                                    console.error('Error:', error);
-                                                    alert("There was an error adding the product to the cart. Please try again.");
-                                                });
-                                        }
-                                    </script>
+
+
 
 
 
