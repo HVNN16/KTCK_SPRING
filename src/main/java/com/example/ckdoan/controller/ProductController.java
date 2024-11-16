@@ -1,7 +1,6 @@
 package com.example.ckdoan.controller;
 
 import com.example.ckdoan.model.Product;
-import com.example.ckdoan.repository.ProductRepository;
 import com.example.ckdoan.service.ProductService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +9,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -21,19 +22,19 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @Autowired
-    private ProductRepository repo;
+    // Path to save images
+    private final String IMAGE_PATH = "D:\\Web1\\KTCK\\ckdoan\\public\\images\\"; // Ensure the directory exists
 
-    // Thay đổi đường dẫn lưu hình ảnh thành đường dẫn hợp lệ và đảm bảo thư mục tồn tại
-    private final String IMAGE_PATH = "D:\\Web1\\KTCK\\ckdoan\\public\\images\\"; // Đảm bảo thư mục này tồn tại
-
-    // LAY DU LIEU Tu myphpadmin
+    // Display product list
     @GetMapping({"", "/shop"})
-    public String showProductList(Model model) {
-        List<Product> products = repo.findAll();
+    public String showProductList(Model model, @SessionAttribute(name = "cart", required = false) List<Product> cart) {
+        List<Product> products = productService.findAll(); // Use service method instead of repo directly
         model.addAttribute("products", products);
-        return "shop"; // Trả về view cho trang shop
+        model.addAttribute("cart", cart); // Display cart contents on the product page
+        return "shop"; // Return to the shop view
     }
+
+    // Show product details
     @GetMapping("/detail")
     public String showDetailPage(Model model) {
         List<Product> products = productService.findAll(); // Fetch all products
@@ -41,122 +42,125 @@ public class ProductController {
         return "detail"; // Return to the detail view
     }
 
+    // Add product to the cart (session-based)
+    @PostMapping("/add-to-cart/{productId}")
+    public String addToCart(@PathVariable("productId") Long productId, @SessionAttribute(name = "cart", required = false) List<Product> cart, HttpSession session) {
+        Product product = productService.findById(productId);
+        if (product != null) {
+            if (cart == null) {
+                cart = new ArrayList<>();
+            }
+            cart.add(product);
+            session.setAttribute("cart", cart); // Store updated cart in the session
+        }
+        return "redirect:/cart"; // Redirect to the cart page
+    }
 
+//    // Show cart page with the products added to the cart
+//    @GetMapping("/cart")
+//    public String showCartPage(@SessionAttribute(name = "cart", required = false) List<Product> cart, Model model) {
+//        model.addAttribute("cart", cart);
+//        return "cart"; // Display the cart page
+//    }
 
-    // GET ALL PRODUCTS
+    // Get all products (for API)
     @GetMapping("/products")
     @ResponseBody
     public List<Product> getProductList() {
         return productService.findAll();
     }
 
-    // GET PRODUCT BY ID
+    // Get product by ID (for API)
     @GetMapping("/products/{id}")
     @ResponseBody
     public ResponseEntity<Product> getProductById(@PathVariable("id") Long productId) {
         Product product = productService.findById(productId);
-        return ResponseEntity.ok(product); // Trả về sản phẩm nếu tìm thấy
+        return product != null ? ResponseEntity.ok(product) : ResponseEntity.notFound().build();
     }
 
-    // CREATE NEW PRODUCT
+    // Create new product
     @PostMapping("/products")
     @ResponseBody
     public ResponseEntity<Product> createProduct(@RequestParam("product") String productJson,
                                                  @RequestParam(value = "imageFile", required = false) MultipartFile imageFile) {
-        Product product = null;
         try {
-            product = new ObjectMapper().readValue(productJson, Product.class);
+            Product product = new ObjectMapper().readValue(productJson, Product.class);
             if (imageFile != null && !imageFile.isEmpty()) {
                 String imagePath = saveImage(imageFile);
                 product.setImageUrl(imagePath);
             }
             productService.save(product);
-            return ResponseEntity.status(201).body(product);
+            return ResponseEntity.status(201).body(product); // Return 201 for created resource
         } catch (IOException e) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().build(); // Return 400 for bad request
         }
     }
 
-    // UPDATE PRODUCT BY ID
+    // Update product by ID
     @PutMapping("/products/{id}")
     @ResponseBody
     public ResponseEntity<Product> updateProduct(@PathVariable("id") Long productId,
                                                  @RequestParam("product") String productJson,
                                                  @RequestParam(value = "imageFile", required = false) MultipartFile imageFile) {
-        Product product = productService.findById(productId);
-        if (product != null) {
+        Product existingProduct = productService.findById(productId);
+        if (existingProduct != null) {
             try {
                 Product updateProduct = new ObjectMapper().readValue(productJson, Product.class);
-                product.setProductName(updateProduct.getProductName());
-                product.setDescription(updateProduct.getDescription());
-                product.setPrice(updateProduct.getPrice());
-                product.setStock(updateProduct.getStock());
+                existingProduct.setProductName(updateProduct.getProductName());
+                existingProduct.setDescription(updateProduct.getDescription());
+                existingProduct.setPrice(updateProduct.getPrice());
+                existingProduct.setStock(updateProduct.getStock());
 
                 if (imageFile != null && !imageFile.isEmpty()) {
                     String imagePath = saveImage(imageFile);
-                    product.setImageUrl(imagePath);
+                    existingProduct.setImageUrl(imagePath);
                 }
 
-                productService.save(product);
-                return ResponseEntity.ok(product); // Trả về sản phẩm đã cập nhật
+                productService.save(existingProduct);
+                return ResponseEntity.ok(existingProduct); // Return updated product
             } catch (IOException e) {
-                return ResponseEntity.badRequest().build();
+                return ResponseEntity.badRequest().build(); // Return 400 if error in parsing JSON
             }
         }
-        return ResponseEntity.status(404).build(); // Trả về 404 nếu không tìm thấy
+        return ResponseEntity.status(404).build(); // Return 404 if product not found
     }
 
-    // DELETE PRODUCT BY ID
+    // Delete product by ID
     @DeleteMapping("/products/{id}")
     @ResponseBody
     public ResponseEntity<Void> removeProductById(@PathVariable("id") Long productId) {
         try {
-            productService.delete(productId); // Nếu sản phẩm không tồn tại, sẽ ném ra RuntimeException
-            return ResponseEntity.noContent().build(); // Trả về 204 No Content
+            productService.delete(productId); // Delete the product
+            return ResponseEntity.noContent().build(); // Return 204 No Content
         } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build(); // Trả về 404 nếu sản phẩm không tồn tại
+            return ResponseEntity.notFound().build(); // Return 404 if product not found
         }
     }
 
-    // Trang quản lý sản phẩm
+    // Admin page to manage products
     @GetMapping("/admin")
     public String showAdminPage(Model model) {
         List<Product> products = productService.findAll();
         model.addAttribute("products", products);
-        return "admin"; // Trả về view admin.html
+        return "admin"; // Return view for admin management
     }
 
+    // Save the uploaded image
     private String saveImage(MultipartFile imageFile) {
         String fileName = imageFile.getOriginalFilename();
-        String filePath = fileName; // Đường dẫn đầy đủ
+        String filePath = IMAGE_PATH + fileName; // Full path to save image
 
-        // Tạo thư mục nếu nó không tồn tại
+        // Ensure the directory exists
         File directory = new File(IMAGE_PATH);
         if (!directory.exists()) {
-            directory.mkdirs(); // Tạo tất cả các thư mục cần thiết
+            directory.mkdirs(); // Create directory if not exists
         }
 
         try {
-            imageFile.transferTo(new File(filePath)); // Lưu file vào đường dẫn đầy đủ
+            imageFile.transferTo(new File(filePath)); // Save file to path
         } catch (IOException e) {
             throw new RuntimeException("Failed to store file: " + e.getMessage());
         }
-        return fileName; // Trả về đường dẫn URL hợp lệ cho hình ảnh
+        return "images/" + fileName; // Return relative path to access image via URL
     }
-
-
-    @GetMapping("/cart")
-    public String showCartPage() {
-        return "cart";
-    }
-
-    @GetMapping("/register")
-    public String showLoginPage() {
-        return "register";
-    }
-
-//    @GetMapping("/detail")
-//    public String showDetailPage() {
-//        return "detail";
-//    }
 }
