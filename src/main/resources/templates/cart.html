@@ -222,6 +222,92 @@
         </div>
     </div>
 </div>
+<script>
+    // Hàm cập nhật số lượng và tính tổng
+    function updateQuantity(cartItemId, quantity) {
+        if (quantity < 1) {
+            alert("Quantity cannot be less than 1");
+            return;
+        }
+
+        fetch(`/cart/update`, {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: `cartItemId=${cartItemId}&quantity=${quantity}`,
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                refreshCart(data.cartItems, data.subtotal, data.total);
+            })
+            .catch((error) => console.error("Error:", error));
+    }
+
+    // Hàm xóa sản phẩm khỏi giỏ hàng
+    function removeFromCart(cartItemId) {
+        fetch(`/cart/remove`, {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: `cartItemId=${cartItemId}`,
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                refreshCart(data.cartItems, data.subtotal, data.total);
+            })
+            .catch((error) => console.error("Error:", error));
+    }
+
+    // Hàm làm mới giỏ hàng
+    function refreshCart(cartItems, subtotal, total) {
+        updateCartTable(cartItems);
+        updateCartSummary(subtotal, total);
+    }
+
+    // Hàm cập nhật bảng sản phẩm
+    function updateCartTable(cartItems) {
+        const cartItemsContainer = document.getElementById("cartItems");
+        cartItemsContainer.innerHTML = ""; // Xóa nội dung cũ
+
+        cartItems.forEach((item, index) => {
+            cartItemsContainer.innerHTML += `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td>${item.product.name}</td>
+                    <td>${item.product.price}</td>
+                    <td>
+                        <input type="number" value="${item.quantity}" min="1"
+                            onchange="updateQuantity(${item.id}, this.value)" class="form-control">
+                    </td>
+                    <td>${item.totalPrice}</td>
+                    <td>
+                        <button onclick="removeFromCart(${item.id})" class="btn btn-danger">Remove</button>
+                    </td>
+                </tr>
+            `;
+        });
+    }
+
+    // Hàm cập nhật tổng giá trị giỏ hàng
+    function updateCartSummary(subtotal, total) {
+        document.querySelector(".subtotal-cart").innerText = `$${subtotal}`;
+        document.querySelector(".total-cart").innerText = `$${total}`;
+    }
+
+    // Hàm thêm sản phẩm mới vào giỏ hàng
+    function addToCart(productId) {
+        fetch(`/cart/add`, {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: `productId=${productId}`,
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                refreshCart(data.cartItems, data.subtotal, data.total);
+            })
+            .catch((error) => console.error("Error:", error));
+    }
+</script>
+
+
 <!-- Cart End -->
 <!-- Footer Start -->
 <div class="footer bg-gray-900">
