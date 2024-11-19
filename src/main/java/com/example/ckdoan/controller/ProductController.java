@@ -163,4 +163,19 @@ public class ProductController {
         }
         return "images/" + fileName; // Return relative path to access image via URL
     }
+    //Checkout Template
+    @GetMapping("/checkout")
+    public String showCheckoutPage() {
+        return "checkout"; // Tên file HTML trong thư mục templates (không cần đuôi .html)
+    }
+    //Contact Template
+    @GetMapping("/contact")
+    public String showContactPage() {
+        return "contact"; // Tên file HTML trong thư mục templates (không cần đuôi .html)
+    }
+    //Register Template
+    @GetMapping("/register")
+    public String showResigterPage() {
+        return "register"; // Tên file HTML trong thư mục templates (không cần đuôi .html)
+    }
 }

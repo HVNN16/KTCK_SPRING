@@ -3,133 +3,107 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin - Product Management</title>
+  <title>Admin Panel - Product Management</title>
+  <!-- AdminLTE and Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <style>
-    body {
-      background-color: #f8f9fc;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      color: #495057;
-    }
-    h1 {
-      color: #343a40;
-      margin-bottom: 20px;
-      text-align: center;
-      font-size: 1.8rem;
-      font-weight: 600;
-    }
-    .container {
-      max-width: 960px;
-    }
-    .table {
-      background-color: #ffffff;
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      margin-bottom: 20px;
-    }
-    .table th {
-      background-color: #007bff;
-      color: white;
-      text-align: center;
-    }
-    .table tbody tr:hover {
-      background-color: #f1f5f9;
-    }
-    .modal-content {
-      border-radius: 10px;
-      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.15);
-    }
-    .image-preview, .table .image-preview {
-      width: 300px;
-      height: 300px;
-      object-fit: cover;
-      margin-top: 10px;
-    }
-    .table .image-preview {
-      width: 100px;
-      height: 100px;
-    }
-    .action-buttons .btn {
-      margin-right: 5px;
-    }
-    .btn-primary, .btn-info, .btn-danger, .btn-success {
-      transition: background-color 0.3s;
-    }
-    .btn-primary:hover { background-color: #0056b3; }
-    .btn-info:hover { background-color: #5bc0de; }
-    .btn-danger:hover { background-color: #c82333; }
-    .btn-success:hover { background-color: #218838; }
-    .modal-header {
-      background-color: #007bff;
-      color: white;
-    }
-    .modal-footer {
-      display: flex;
-      justify-content: space-between;
-    }
-    /* Add styles for navbar */
-    .navbar {
-      margin-bottom: 30px;
-    }
-    .navbar-brand {
-      color: white !important;
-    }
-  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
-<body>
-<!-- Navbar for Admin Panel -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-  <a class="navbar-brand" href="#">Admin Panel</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarNav">
-    <ul class="navbar-nav ml-auto">
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+
+  <!-- Navbar -->
+  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+    <ul class="navbar-nav">
       <li class="nav-item">
-        <a class="nav-link" href="/admin">Product Management</a>
+        <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/feproducts">FE Products</a> <!-- Link for managing FE products -->
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/users">User Management</a> <!-- Link for user management -->
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/logout">Logout</a> <!-- Logout link -->
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="#" class="nav-link">Home</a>
       </li>
     </ul>
-  </div>
-</nav>
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+      </li>
+    </ul>
+  </nav>
 
-<div class="container mt-5">
-  <h1>Product Management</h1>
-  <div class="text-right mb-3">
-    <button class="btn btn-primary" onclick="openModal()"><i class="fas fa-plus-circle"></i> Add Product</button>
-  </div>
-  <table class="table table-striped table-bordered">
-    <thead>
-    <tr>
-      <th>ID</th>
-      <th>Name</th>
-      <th>Description</th>
-      <th>Price</th>
-      <th>Stock</th>
-      <th>Image</th>
-      <th>Actions</th>
-    </tr>
-    </thead>
-    <tbody id="productList"></tbody>
-  </table>
+  <!-- Sidebar -->
+  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <a href="#" class="brand-link">
+      <span class="brand-text font-weight-light">AdminLTE</span>
+    </a>
+    <div class="sidebar">
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" role="menu">
+          <li class="nav-item">
+            <a href="/admin" class="nav-link active">
+              <i class="nav-icon fas fa-th"></i>
+              <p>Product Management</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="/feproducts" class="nav-link">
+              <i class="nav-icon fas fa-box"></i>
+              <p>FE Products</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="/users" class="nav-link">
+              <i class="nav-icon fas fa-users"></i>
+              <p>User Management</p>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </aside>
 
-  <!-- Modal for adding/editing product -->
-  <div class="modal fade" id="productModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+  <!-- Content Wrapper -->
+  <div class="content-wrapper">
+    <section class="content-header">
+      <div class="container-fluid">
+        <h1>Product Management</h1>
+      </div>
+    </section>
+    <section class="content">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Product List</h3>
+          <div class="card-tools">
+            <button class="btn btn-primary" onclick="openModal()">
+              <i class="fas fa-plus-circle"></i> Add Product
+            </button>
+          </div>
+        </div>
+        <div class="card-body">
+          <table class="table table-bordered">
+            <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Description</th>
+              <th>Price</th>
+              <th>Stock</th>
+              <th>Image</th>
+              <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody id="productList"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="modalTitle">Add Product</h5>
-          <button type="button" class="close" onclick="closeModal()" aria-label="Close">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -137,142 +111,114 @@
           <form id="productForm">
             <input type="hidden" id="productId" />
             <div class="form-group">
-              <input type="text" class="form-control" id="productName" placeholder="Product Name" required />
+              <label for="productName">Name</label>
+              <input type="text" class="form-control" id="productName" placeholder="Product Name" required>
             </div>
             <div class="form-group">
-              <input type="text" class="form-control" id="productDescription" placeholder="Description" required />
+              <label for="productDescription">Description</label>
+              <input type="text" class="form-control" id="productDescription" placeholder="Description" required>
             </div>
             <div class="form-group">
-              <input type="number" class="form-control" id="productPrice" placeholder="Price" required />
+              <label for="productPrice">Price</label>
+              <input type="number" class="form-control" id="productPrice" placeholder="Price" required>
             </div>
             <div class="form-group">
-              <input type="number" class="form-control" id="productStock" placeholder="Stock" required />
+              <label for="productStock">Stock</label>
+              <input type="number" class="form-control" id="productStock" placeholder="Stock" required>
             </div>
             <div class="form-group">
-              <input type="file" class="form-control" id="productImageFile" onchange="previewImage(event)" />
-              <img id="imagePreview" class="image-preview" src="" alt="Image Preview" />
+              <label for="productImageFile">Image</label>
+              <input type="file" class="form-control" id="productImageFile" onchange="previewImage(event)">
+              <img id="imagePreview" class="mt-2" style="max-width: 100%;" />
             </div>
           </form>
         </div>
         <div class="modal-footer">
-          <button type="submit" class="btn btn-success" onclick="submitForm()"><i class="fas fa-save"></i> Save Product</button>
-          <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+          <button type="button" class="btn btn-success" onclick="submitForm()"><i class="fas fa-save"></i> Save</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
         </div>
       </div>
     </div>
   </div>
+
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark"></aside>
+
 </div>
 
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- Scripts -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
 <script>
   const productList = document.getElementById('productList');
   const imagePreview = document.getElementById('imagePreview');
 
-  // Fetch products and display them in the table
+  // Fetch products and display in table
   async function fetchProducts() {
     const response = await fetch('/products');
     const products = await response.json();
     productList.innerHTML = products.map(product => `
-        <tr>
-          <td>${product.productId}</td>
-          <td>${product.productName}</td>
-          <td>${product.description}</td>
-          <td>${product.price}</td>
-          <td>${product.stock}</td>
-          <td><img src="/images/${product.imageUrl}" class="image-preview" /></td>
-          <td class="action-buttons">
-            <button class="btn btn-info btn-sm" onclick="openModal(${product.productId})"><i class="fas fa-edit"></i> Edit</button>
-            <button class="btn btn-danger btn-sm" onclick="confirmDelete(${product.productId})"><i class="fas fa-trash"></i> Delete</button>
-          </td>
-        </tr>
-      `).join('');
+      <tr>
+        <td>${product.productId}</td>
+        <td>${product.productName}</td>
+        <td>${product.description}</td>
+        <td>${product.price}</td>
+        <td>${product.stock}</td>
+        <td><img src="/images/${product.imageUrl}" style="max-width: 80px;"></td>
+        <td>
+          <button class="btn btn-info btn-sm" onclick="openModal(${product.id})"><i class="fas fa-edit"></i> Edit</button>
+          <br>
+          <button class="btn btn-danger btn-sm" onclick="deleteProduct(${product.id})"><i class="fas fa-trash"></i> Delete</button>
+        </td>
+      </tr>
+    `).join('');
   }
 
-  // Preview image before uploading
+  // Preview image before upload
   function previewImage(event) {
     const file = event.target.files[0];
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      imagePreview.src = e.target.result;
-      imagePreview.style.display = 'block';
-    };
-    reader.readAsDataURL(file);
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = e => {
+        imagePreview.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
   }
 
   // Handle form submission
   async function submitForm() {
-    const productId = document.getElementById('productId').value;
-    const method = productId ? 'PUT' : 'POST';
-    const url = productId ? `/products/${productId}` : '/products';
+    const id = document.getElementById('productId').value;
+    const formData = new FormData(document.getElementById('productForm'));
+    const url = id ? `/products/${id}` : '/products';
+    const method = id ? 'PUT' : 'POST';
 
-    const formData = new FormData();
-    formData.append('product', JSON.stringify({
-      productName: document.getElementById('productName').value,
-      description: document.getElementById('productDescription').value,
-      price: document.getElementById('productPrice').value,
-      stock: document.getElementById('productStock').value,
-    }));
-    formData.append('imageFile', document.getElementById('productImageFile').files[0]);
-
-    const response = await fetch(url, {
-      method,
-      body: formData,
-    });
+    const response = await fetch(url, { method, body: formData });
     if (response.ok) {
       fetchProducts();
-      closeModal();
+      $('#productModal').modal('hide');
     }
   }
 
-  // Open modal to add or edit product
-  async function openModal(productId = null) {
-    if (productId) {
-      // Fetch product details for editing
-      const response = await fetch(`/products/${productId}`);
-      const product = await response.json();
-
-      document.getElementById('productId').value = product.productId;
-      document.getElementById('productName').value = product.productName;
-      document.getElementById('productDescription').value = product.description;
-      document.getElementById('productPrice').value = product.price;
-      document.getElementById('productStock').value = product.stock;
-      imagePreview.src = `/images/${product.imageUrl}`;
-      imagePreview.style.display = 'block';
+  // Open modal to add/edit product
+  function openModal(id = null) {
+    if (id) {
+      // Fetch product details
     } else {
       document.getElementById('productForm').reset();
-      imagePreview.style.display = 'none';
     }
     $('#productModal').modal('show');
   }
 
-  // Close modal
-  function closeModal() {
-    $('#productModal').modal('hide');
-  }
-
-  // Confirm delete action
-  async function confirmDelete(productId) {
-    const isConfirmed = confirm("Are you sure you want to delete this product?");
-    if (isConfirmed) {
-      deleteProduct(productId);
-    }
-  }
-
   // Delete product
-  async function deleteProduct(productId) {
-    const response = await fetch(`/products/${productId}`, {
-      method: 'DELETE',
-    });
-    if (response.ok) {
-      fetchProducts();
-    }
+  async function deleteProduct(id) {
+    const response = await fetch(`/products/${id}`, { method: 'DELETE' });
+    if (response.ok) fetchProducts();
   }
 
-  // Initialize page
+  // Initialize
   fetchProducts();
 </script>
-
 </body>
 </html>
