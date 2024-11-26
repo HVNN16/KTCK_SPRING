@@ -173,9 +173,5 @@ public class ProductController {
     public String showContactPage() {
         return "contact"; // Tên file HTML trong thư mục templates (không cần đuôi .html)
     }
-    //Register Template
-    @GetMapping("/register")
-    public String showResigterPage() {
-        return "register"; // Tên file HTML trong thư mục templates (không cần đuôi .html)
-    }
+
 }
