@@ -4,6 +4,7 @@ import com.example.ckdoan.dto.UserDto;
 import com.example.ckdoan.model.User;
 import com.example.ckdoan.service.UserService;
 import jakarta.validation.Valid;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,23 +17,33 @@ import java.util.List;
 @Controller
 public class AuthController {
 
-    private UserService userService;
+    private final UserService userService;
 
     public AuthController(UserService userService) {
         this.userService = userService;
     }
 
     @GetMapping("index")
-    public String home(){
+    public String home(Model model) {
+        String username = "anonymousUser"; // Default value
+        if (SecurityContextHolder.getContext().getAuthentication() != null) {
+            username = SecurityContextHolder.getContext().getAuthentication().getName();
+        }
+        if (!username.equals("anonymousUser")) {
+            model.addAttribute("greeting", "Xin chào, " + username);
+            model.addAttribute("isLoggedIn", true); // User is logged in
+        } else {
+            model.addAttribute("isLoggedIn", false); // User is not logged in
+        }
         return "index";
     }
+
 
     @GetMapping("/login")
     public String loginForm() {
         return "login/login";
     }
 
-    // handler method to handle user registration request
     @GetMapping("register")
     public String showRegistrationForm(Model model){
         UserDto user = new UserDto();
@@ -40,7 +51,6 @@ public class AuthController {
         return "login/register";
     }
 
-    // handler method to handle register user form submit request
     @PostMapping("/register/save")
     public String registration(@Valid @ModelAttribute("user") UserDto user,
                                BindingResult result,

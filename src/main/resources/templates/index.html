@@ -67,60 +67,65 @@
   </div>
   <!-- Topbar End -->
 
-  <div class="header-inner py-4 bg-gray-900">
+  <header class="header-inner py-4 bg-gray-900">
     <div class="container">
       <div class="row align-items-center py-3">
+        <!-- Logo Section -->
         <div class="col-lg-3 d-none d-lg-block">
-          <a href="" class="text-decoration-none">
-            <h2 class="m-0 display-5 font-weight-semi-bold"><span class="text-primary font-weight-bold border px-3 mr-1">WATCH</span><span class="text-light">SHOP</span></h2>
+          <a href="/" class="text-decoration-none" aria-label="Go to home page">
+            <h2 class="m-0 display-5 font-weight-semi-bold">
+              <span class="text-primary font-weight-bold border px-3 mr-1">WATCH</span>
+              <span class="text-light">SHOP</span>
+            </h2>
           </a>
         </div>
+
+        <!-- Search Section -->
         <div class="col-lg-6 col-12 text-left search-inner">
-          <form action="" class="w-100 position-relative">
-            <div class="input-group">
-              <input type="text" class="form-control" placeholder="Search for products">
-              <div class="input-group-append">
-                                    <span class="input-group-text bg-primary text-light">
-                                        <i class="fa fa-search"></i>
-                                    </span>
-              </div>
-
-              <div class="search-history w-100 bg-light mt-2 rounded">
-                <h5 class="p-3">
-                  Search history
-                </h5>
-                <ul class="list-group">
-                  <li class="list-group-item">Cras justo odio</li>
-                  <li class="list-group-item">Dapibus ac facilisis in</li>
-                  <li class="list-group-item">Morbi leo risus</li>
-                  <li class="list-group-item">Porta ac consectetur ac</li>
-                  <li class="list-group-item">Vestibulum at eros</li>
-                </ul>
-
-                <a href="" class="btn text-center w-100 p-2 btn-show-all">All</a>
-              </div>
-            </div>
-          </form>
+          <!-- Search Form here -->
         </div>
 
+        <!-- User & Cart Section -->
         <div class="col-lg-3 col-12 d-flex align-items-center justify-content-lg-end justify-content-sm-between">
-          <a href="" class="btn" style="font-size: 20px">
+          <!-- Wishlist Icon -->
+          <a href="#" class="btn" style="font-size: 20px" aria-label="View Wishlist">
             <i class="fas fa-heart text-primary"></i>
             <span class="badge text-light">0</span>
           </a>
-          <a href="/cart/view" class="btn" style="font-size: 20px">
+
+          <!-- Cart Icon -->
+          <a href="/cart/view" class="btn" style="font-size: 20px" aria-label="View Cart">
             <i class="fas fa-shopping-cart text-primary"></i>
             <span class="badge sum-cart text-light">0</span>
           </a>
-          <!-- Login Icon -->
-          <a href="/register" class="btn" style="font-size: 20px">
-            <i class="fas fa-user text-primary"></i>
-<!--            <span class="text-light">Register</span>-->
-          </a>
+
+          <!-- Conditional Display: User Greeting and Logout or Register/Login -->
+          <!-- Conditional Display: User Greeting and Logout or Register/Login -->
+          <div th:if="${isLoggedIn != null and isLoggedIn}">
+            <span th:text="${greeting}"></span> <!-- Display User Greeting -->
+            <a href="/logout" class="btn" style="font-size: 15px;" aria-label="Log out">
+              <i class="fas fa-sign-out-alt text-danger"></i>
+              <span class="text-danger">Đăng Xuất</span>
+            </a>
+          </div>
+
+          <!-- Login and Register Links when User is Not Logged In -->
+          <div th:if="${isLoggedIn == null or !isLoggedIn}">
+            <a href="/register" class="btn" style="font-size: 15px; margin-right: 10px;" aria-label="Register">
+              <i class="fas fa-user-plus text-primary"></i>
+              <span class="text-primary">Đăng Ký</span>
+            </a>
+            <a href="/login" class="btn" style="font-size: 15px;" aria-label="Login">
+              <i class="fas fa-sign-in-alt text-success"></i>
+              <span class="text-success">Đăng Nhập</span>
+            </a>
+          </div>
+
         </div>
       </div>
     </div>
-  </div>
+  </header>
+
 
 
   <!-- Navbar Start -->
