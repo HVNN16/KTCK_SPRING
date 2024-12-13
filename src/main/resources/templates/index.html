@@ -100,7 +100,6 @@
           </a>
 
           <!-- Conditional Display: User Greeting and Logout or Register/Login -->
-          <!-- Conditional Display: User Greeting and Logout or Register/Login -->
           <div th:if="${isLoggedIn != null and isLoggedIn}">
             <span th:text="${greeting}"></span> <!-- Display User Greeting -->
             <a href="/logout" class="btn" style="font-size: 15px;" aria-label="Log out">

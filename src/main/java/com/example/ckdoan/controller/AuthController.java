@@ -4,6 +4,7 @@ import com.example.ckdoan.dto.UserDto;
 import com.example.ckdoan.model.User;
 import com.example.ckdoan.service.UserService;
 import jakarta.validation.Valid;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,19 +24,23 @@ public class AuthController {
         this.userService = userService;
     }
 
-    @GetMapping("index")
+    @GetMapping("/index")
     public String home(Model model) {
-        String username = "anonymousUser"; // Default value
-        if (SecurityContextHolder.getContext().getAuthentication() != null) {
-            username = SecurityContextHolder.getContext().getAuthentication().getName();
-        }
-        if (!username.equals("anonymousUser")) {
-            model.addAttribute("greeting", "Xin chào, " + username);
+        // Get the Authentication object from the SecurityContext
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication != null && authentication.isAuthenticated() &&
+                !(authentication.getName().equals("anonymousUser"))) {
+            // User is logged in, get their username
+            String username = authentication.getName();
+            model.addAttribute("greeting", "Xin chào, " + username); // Greeting message
             model.addAttribute("isLoggedIn", true); // User is logged in
         } else {
+            // User is not logged in
             model.addAttribute("isLoggedIn", false); // User is not logged in
         }
-        return "index";
+
+        return "index"; // Return the home page view
     }
 
 
