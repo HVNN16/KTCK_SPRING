@@ -99,7 +99,7 @@
             <span class="badge sum-cart text-light">0</span>
           </a>
 
-          <!-- Conditional Display: User Greeting and Logout or Register/Login -->
+          <!-- Greeting Display -->
           <div th:if="${isLoggedIn != null and isLoggedIn}">
             <span th:text="${greeting}"></span> <!-- Display User Greeting -->
             <a href="/logout" class="btn" style="font-size: 15px;" aria-label="Log out">
@@ -108,15 +108,16 @@
             </a>
           </div>
 
+
           <!-- Login and Register Links when User is Not Logged In -->
           <div th:if="${isLoggedIn == null or !isLoggedIn}">
             <a href="/register" class="btn" style="font-size: 15px; margin-right: 10px;" aria-label="Register">
               <i class="fas fa-user-plus text-primary"></i>
-              <span class="text-primary">Đăng Ký</span>
+              <span class="text-primary"></span>
             </a>
             <a href="/login" class="btn" style="font-size: 15px;" aria-label="Login">
               <i class="fas fa-sign-in-alt text-success"></i>
-              <span class="text-success">Đăng Nhập</span>
+              <span class="text-success"></span>
             </a>
           </div>
 
